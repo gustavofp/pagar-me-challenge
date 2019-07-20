@@ -1,0 +1,22 @@
+{
+  "name": "pagar-me",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "license": "MIT",
+  "scripts": {
+    "start": "ts-node src/server.ts"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.0",
+    "@types/node": "^12.6.3",
+    "reflect-metadata": "^0.1.13",
+    "sequelize-typescript": "^0.6.11",
+    "ts-node": "^8.3.0",
+    "typescript": "^3.5.3"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "pg": "^7.11.0",
+    "sequelize": "^5.10.1"
+  }
+}
