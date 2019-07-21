@@ -7,7 +7,7 @@ import Transaction from './Transaction';
 class Customer extends Model<Customer> {
   @PrimaryKey
   @Column
-  id!: Number;
+  id!: number;
 
   @Column
   cpf!: string;

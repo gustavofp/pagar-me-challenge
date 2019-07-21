@@ -2,24 +2,22 @@ import { Table, Column, Model, HasMany, PrimaryKey } from 'sequelize-typescript'
 import Transaction from './Transaction';
 
 @Table({
-  modelName: 'card',
+  modelName: 'payment_method'
 })
-class Card extends Model<Card> {
+class PaymentMethod extends Model<PaymentMethod> {
+
   @PrimaryKey
   @Column
-  id!: number;
+  name!: string;
 
   @Column
-  last_digits!: number;
+  description!: string;
 
   @Column
-  cvv!: number;
-
-  @Column
-  valid_thru!: Date;
+  fee!: number;
 
   @HasMany(() => Transaction)
   transaction!: Transaction[];
 }
 
-export default Card;
+export default PaymentMethod;

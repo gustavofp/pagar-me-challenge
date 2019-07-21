@@ -1,12 +1,20 @@
 export interface PayableInterface {
-  id_transaction: Number,
+  id?: number,
+  idTransaction: number,
+  status: string,
+  paymentDate: Date,
+  availableAmount: number
+}
+
+export interface PayableModel {
+  id?: number,
+  id_transaction: number,
   status: string,
   payment_date: Date,
-  fee: number,
   available_amount: number
 }
 
 export enum Status {
-  'paid',
-  'waiting_funds'
+  PAID = 'paid',
+  WAITING_FUNDS = 'waiting_funds'
 }

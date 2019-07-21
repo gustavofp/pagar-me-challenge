@@ -7,6 +7,7 @@ import Transaction from './model/Transaction';
 import Card from './model/Card';
 import Customer from './model/Customer';
 import Payable from './model/Payable';
+import PaymentMethod from './model/PaymentMethod';
 
 class App {
   public app: Application;
@@ -46,7 +47,8 @@ class App {
       Transaction,
       Card,
       Customer,
-      Payable
+      Payable,
+      PaymentMethod
     ])
   }
 

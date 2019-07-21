@@ -1,4 +1,4 @@
-import { Table, Column, Model, ForeignKey, BelongsTo, PrimaryKey } from 'sequelize-typescript';
+import { Table, Column, Model, ForeignKey, BelongsTo, PrimaryKey, AutoIncrement } from 'sequelize-typescript';
 import Transaction from "./Transaction";
 
 @Table({
@@ -6,12 +6,13 @@ import Transaction from "./Transaction";
 })
 class Payable extends Model<Payable>{
   @PrimaryKey
+  @AutoIncrement
   @Column
   id!: Number;
 
   @ForeignKey(() => Transaction)
   @Column
-  id_customer!: Number;
+  id_transaction!: number;
 
   @BelongsTo(() => Transaction)
   transaction!: Transaction;
@@ -20,13 +21,10 @@ class Payable extends Model<Payable>{
   status!: string;
 
   @Column
-  fee!: Number;
+  available_amount!: number;
 
   @Column
-  available_amount!: Number;
-
-  @Column
-  payment_date!: Number;
+  payment_date!: Date;
 }
 
 export default Payable;
