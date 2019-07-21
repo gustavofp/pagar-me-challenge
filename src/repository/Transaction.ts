@@ -1,8 +1,8 @@
 import Transaction from '../model/Transaction';
-import { TransactionRequest } from '../interface/Transaction';
+import { TransactionModel } from '../interface/Transaction';
 
 class TransactionRepository {
-  static async insert(transactionData: TransactionRequest): Promise<Transaction>  {
+  static async insert(transactionData: TransactionModel): Promise<Transaction>  {
     const transaction: Transaction = new Transaction(transactionData)
     await transaction.save();
 

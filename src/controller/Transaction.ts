@@ -1,9 +1,8 @@
 import { Request, Response, Router } from "express";
-import { TransactionInterface, TransactionRequest } from '../interface/Transaction';
+import { TransactionInterface, CreateTransactionRequest } from '../interface/Transaction';
 import TransactionService from '../service/Transaction';
 import { PayableInterface } from '../interface/Payable';
 import Controller from '../interface/Controller';
-import Transaction from '../model/Transaction';
 import { CardInterface } from "../interface/Card";
 import CardService from "../service/Card";
 import { CustomerInterface } from "../interface/Customer";
@@ -12,6 +11,7 @@ import PaymentMethodService from "../service/PaymentMethod";
 import { PaymentMethodInterface } from "../interface/PaymentMethod";
 import PayableService from "../service/Payable";
 import { NextFunction } from "connect";
+import CreateTransactionRequestMap from "../mappers/CreateTransactionRequest";
 
 class TransactionController implements Controller {
   public path: string = '/transaction';
@@ -44,13 +44,17 @@ class TransactionController implements Controller {
 
   private async insert(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
-      const transactionRequest: TransactionRequest = req.body;
+      const transactionRequest: CreateTransactionRequest = req.body;
 
       const customer: CustomerInterface = await CustomerService.getCustomerById(transactionRequest.id_customer);
-      const card: CardInterface = await CardService.getCardById(transactionRequest.id_card);
+
+      const cardData: CardInterface = CreateTransactionRequestMap.toCardInterface(transactionRequest);
+      const card: CardInterface = await CardService.createCard(cardData);
 
       const paymentMethod: PaymentMethodInterface = await PaymentMethodService.getPaymentMethodByName(transactionRequest.payment_method);
-      const transaction: TransactionInterface = await TransactionService.insertTransaction(transactionRequest);
+      console.log(card);
+      const transactionModel: TransactionInterface = CreateTransactionRequestMap.toTransactionInterface(transactionRequest, card);
+      const transaction: TransactionInterface = await TransactionService.insertTransaction(transactionModel);
       const payableData: PayableInterface = await PayableService.insertPayableForTransaction(transaction, paymentMethod);
 
       return res.send(

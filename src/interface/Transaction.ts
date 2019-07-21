@@ -1,17 +1,28 @@
 export interface TransactionInterface {
-    id: number,
+    id?: number,
     idCustomer: number,
-    idCard: number,
+    idCard?: number,
     transactionDate: Date,
     paymentMethod: string,
     description: string,
     amount: number
 }
 
-export interface TransactionRequest {
+export interface CreateTransactionRequest {
+  id_customer: number,
+  payment_method: string,
+  description: string,
+  cvv: number,
+  amount: number,
+  card_number: number,
+  owner_name: string,
+  valid_thru: Date,
+}
+
+export interface TransactionModel {
   id?: number,
   id_customer: number,
-  id_card: number,
+  id_card?: number,
   transaction_date: Date,
   payment_method: string,
   description: string,

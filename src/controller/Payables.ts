@@ -3,7 +3,8 @@ import { Request, Response, Router } from "express";
 import CustomerService from "../service/Customer";
 import { CustomerInterface } from "../interface/Customer";
 import PayableService from "../service/Payable";
-import { PayableInterface } from "../interface/Payable";
+import { PayableInterface, Status } from "../interface/Payable";
+import { NextFunction } from "connect";
 
 class PayablesController implements Controller {
   public path: string = '/payables';
@@ -14,10 +15,45 @@ class PayablesController implements Controller {
   }
 
   private initializeRoutes(): void {
-    this.router.get(`${this.path}/:customerId`, (req: Request, res: Response) => this.getAvailablePayablesByCustomer(req, res));
+    this.router.get(`${this.path}/waiting-funds/:customerId`, (req: Request, res: Response, next: NextFunction) => this.getWaitingFundsPayablesByCustomer(req, res, next));
+    this.router.get(`${this.path}/available/:customerId`, (req: Request, res: Response, next: NextFunction) => this.getAvailablePayablesByCustomer(req, res, next));
+    this.router.get(`${this.path}/:customerId`, (req: Request, res: Response, next: NextFunction) => this.getPayablesByCustomer(req, res, next));
   }
 
-  private async getAvailablePayablesByCustomer(req: Request, res: Response): Promise<Response> {
+  private async getWaitingFundsPayablesByCustomer(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+    const customerId  = req.params.customerId
+    try {
+      const customer: CustomerInterface = await CustomerService.getCustomerById(customerId);
+
+      const payables: PayableInterface[] = await PayableService.getPayablesByCustomerIdAndStatus(customerId, Status.WAITING_FUNDS);
+
+      return res.send({
+        customer,
+        payables
+      })
+    } catch(err) {
+      return next(err);
+    }
+  }
+
+  private async getAvailablePayablesByCustomer(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+    const customerId  = req.params.customerId
+    try {
+      const customer: CustomerInterface = await CustomerService.getCustomerById(customerId);
+
+      const payables: PayableInterface[] = await PayableService.getPayablesByCustomerIdAndStatus(customerId, Status.PAID);
+
+      return res.send({
+        customer,
+        payables
+      })
+    } catch(err) {
+      return next(err);
+    }
+  }
+
+
+  private async getPayablesByCustomer(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     const customerId  = req.params.customerId
     try {
       const customer: CustomerInterface = await CustomerService.getCustomerById(customerId);
@@ -29,10 +65,7 @@ class PayablesController implements Controller {
         payables
       })
     } catch(err) {
-      console.log(err);
-      return res.send({
-        err
-      })
+      return next(err);
     }
   }
 }

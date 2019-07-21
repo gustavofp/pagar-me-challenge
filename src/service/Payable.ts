@@ -36,6 +36,14 @@ class PayableService {
     return payableInterface;
   }
 
+  static async getPayablesByCustomerIdAndStatus(customerId: number, status: Status): Promise<PayableInterface[]> {
+    const payables: Payable[] = await PayableRepository.getByCustomerId(customerId);
+
+    const payablesInterface: PayableInterface[] = payables.filter(e => e.status === status).map(PayableMap.toInterface);
+
+    return payablesInterface;
+  }
+
   static async getPayablesByCustomerId(customerId: number): Promise<PayableInterface[]> {
     const payables: Payable[] = await PayableRepository.getByCustomerId(customerId);
 

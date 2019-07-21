@@ -1,6 +1,6 @@
 export interface PayableInterface {
   id?: number,
-  idTransaction: number,
+  idTransaction?: number,
   status: string,
   paymentDate: Date,
   availableAmount: number
@@ -8,7 +8,7 @@ export interface PayableInterface {
 
 export interface PayableModel {
   id?: number,
-  id_transaction: number,
+  id_transaction?: number,
   status: string,
   payment_date: Date,
   available_amount: number

@@ -1,4 +1,4 @@
-import { Table, Column, Model, HasMany, PrimaryKey } from 'sequelize-typescript';
+import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement } from 'sequelize-typescript';
 import Transaction from './Transaction';
 
 @Table({
@@ -6,6 +6,7 @@ import Transaction from './Transaction';
 })
 class Card extends Model<Card> {
   @PrimaryKey
+  @AutoIncrement
   @Column
   id!: number;
 
@@ -17,6 +18,9 @@ class Card extends Model<Card> {
 
   @Column
   valid_thru!: Date;
+
+  @Column
+  owner_name!: string;
 
   @HasMany(() => Transaction)
   transaction!: Transaction[];
