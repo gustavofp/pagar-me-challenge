@@ -35,6 +35,14 @@ class PayableService {
 
     return payableInterface;
   }
+
+  static async getPayablesByCustomerId(customerId: number): Promise<PayableInterface[]> {
+    const payables: Payable[] = await PayableRepository.getByCustomerId(customerId);
+
+    const payablesInterface: PayableInterface[] = payables.map(PayableMap.toInterface);
+
+    return payablesInterface;
+  }
 }
 
 export default PayableService;

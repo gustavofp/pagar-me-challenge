@@ -10,6 +10,14 @@ class TransactionService {
 
     return transactionInterface;
   }
+
+  static async getTransactionsByCustomerId(customerId: number): Promise<TransactionInterface[]> {
+    const transactions: Transaction[] = await TransactionRepository.getAllByCustomerId(customerId);
+
+    const transactionsInterface: TransactionInterface[] = transactions.map(TransactionMap.toInterface)
+
+    return transactionsInterface;
+  }
 }
 
 export default TransactionService;

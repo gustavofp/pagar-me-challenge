@@ -1,4 +1,4 @@
-import { Table, Column, Model, ForeignKey, BelongsTo, PrimaryKey, AutoIncrement } from 'sequelize-typescript';
+import { Table, Column, Model, ForeignKey, BelongsTo, PrimaryKey, AutoIncrement, DefaultScope } from 'sequelize-typescript';
 import Transaction from "./Transaction";
 
 @Table({
@@ -14,7 +14,7 @@ class Payable extends Model<Payable>{
   @Column
   id_transaction!: number;
 
-  @BelongsTo(() => Transaction)
+  @BelongsTo(() => Transaction, 'id_transaction')
   transaction!: Transaction;
 
   @Column

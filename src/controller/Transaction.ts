@@ -11,6 +11,7 @@ import CustomerService from "../service/Customer";
 import PaymentMethodService from "../service/PaymentMethod";
 import { PaymentMethodInterface } from "../interface/PaymentMethod";
 import PayableService from "../service/Payable";
+import { NextFunction } from "connect";
 
 class TransactionController implements Controller {
   public path: string = '/transaction';
@@ -21,30 +22,33 @@ class TransactionController implements Controller {
   }
 
   private initializeRoutes(): void {
-    this.router.get(`${this.path}/`, (res: Response) => this.getAll(res));
-    this.router.post(`${this.path}/`, (req: Request, res: Response) => this.insert(req, res));
+    this.router.get(`${this.path}/:customerId`, (req: Request, res: Response, next: NextFunction) => this.getByCustomer(req, res, next));
+    this.router.post(`${this.path}/`, (req: Request, res: Response, next: NextFunction) => this.insert(req, res, next));
   }
 
-  private async getAll(res: Response): Promise<Response> {
+  private async getByCustomer(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+    const customerId  = req.params.customerId
     try {
-      const transactions: Transaction[] = await Transaction.findAll();
+      const customer: CustomerInterface = await CustomerService.getCustomerById(customerId);
+
+      const transactions: TransactionInterface[] = await TransactionService.getTransactionsByCustomerId(customerId);
 
       return res.send({
-        data: transactions
+        customer,
+        transactions
       })
-    } catch (err) {
-      return res.send({
-        err
-      })
+    } catch(err) {
+      return next(err)
     }
   }
 
-  private async insert(req: Request, res: Response): Promise<Response> {
+  private async insert(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
       const transactionRequest: TransactionRequest = req.body;
 
       const customer: CustomerInterface = await CustomerService.getCustomerById(transactionRequest.id_customer);
       const card: CardInterface = await CardService.getCardById(transactionRequest.id_card);
+
       const paymentMethod: PaymentMethodInterface = await PaymentMethodService.getPaymentMethodByName(transactionRequest.payment_method);
       const transaction: TransactionInterface = await TransactionService.insertTransaction(transactionRequest);
       const payableData: PayableInterface = await PayableService.insertPayableForTransaction(transaction, paymentMethod);
@@ -60,11 +64,7 @@ class TransactionController implements Controller {
         }
       )
     } catch(err) {
-      console.log(err);
-      return res.send({
-        success: false,
-        error: err
-      })
+      return next(err);
     }
   }
 }

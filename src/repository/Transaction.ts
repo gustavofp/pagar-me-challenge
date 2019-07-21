@@ -8,6 +8,16 @@ class TransactionRepository {
 
     return transaction;
   }
+
+  static async getAllByCustomerId(customerId: number): Promise<Transaction[]> {
+    const transactions: Transaction[] = await Transaction.findAll({
+      where: {
+        id_customer: customerId
+      }
+    });
+
+    return transactions;
+  }
 }
 
 export default TransactionRepository;
