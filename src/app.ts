@@ -8,12 +8,15 @@ import Card from './model/Card';
 import Customer from './model/Customer';
 import Payable from './model/Payable';
 import PaymentMethod from './model/PaymentMethod';
-
+import { config, DotenvConfigOptions } from 'dotenv';
+import { resolve } from 'path';
 class App {
   public app: Application;
   private sequelize: Sequelize;
 
   constructor(controllers: Controller[]) {
+    this.initializeEnv();
+
     this.app = express();
 
     this.sequelize = this.initializeDatabase();
@@ -28,16 +31,23 @@ class App {
     });
   }
 
+  private initializeEnv(): void {
+    const envConfig: DotenvConfigOptions = {
+      path: resolve(__dirname, '../variables.env')
+    }
+    config(envConfig);
+  }
+
   private initializeDatabase(): Sequelize {
     return new Sequelize({
-      host: 'raja.db.elephantsql.com',
-      database: 'mzsligdp',
+      host: process.env.DATABASE_HOST || '',
+      database: process.env.DATABASE_NAME || '',
       dialect: 'postgres',
-      username: 'mzsligdp',
-      password: '9uFH5Rz1lmyLwZlR3d3fbUzNuusBrS0F',
+      username: process.env.DATABASE_USER || '',
+      password: process.env.DATABASE_PASS || '',
       modelPaths: [__dirname + '/src/model'],
       define: {
-        schema: 'payments'
+        schema: process.env.DATABASE_SCHEMA || ''
       }
     });
   }

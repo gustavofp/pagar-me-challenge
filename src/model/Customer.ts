@@ -2,7 +2,7 @@ import { Table, Column, Model, HasMany, PrimaryKey } from 'sequelize-typescript'
 import Transaction from './Transaction';
 
 @Table({
-  modelName: 'customer',
+  modelName: 'customer'
 })
 class Customer extends Model<Customer> {
   @PrimaryKey
