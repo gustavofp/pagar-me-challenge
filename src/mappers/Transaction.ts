@@ -2,7 +2,7 @@ import Transaction from "../model/Transaction";
 import { TransactionInterface, TransactionModel } from "../interface/Transaction";
 
 class TransactionMap {
-  static toInterface(transaction: Transaction): TransactionInterface {
+  static toInterface(transaction: Transaction | TransactionModel): TransactionInterface {
     return {
       id: transaction.id,
       idCustomer: transaction.id_customer,

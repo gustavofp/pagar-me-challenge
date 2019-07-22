@@ -4,3 +4,10 @@ export interface CustomerInterface {
   lastName: string,
   cpf: string
 }
+
+export interface CustomerModel {
+  id?: number,
+  first_name: string,
+  last_name: string,
+  cpf: string
+}

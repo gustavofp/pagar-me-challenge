@@ -3,7 +3,7 @@ import { PayableInterface, PayableModel } from "../interface/Payable";
 
 
 class PayableMap {
-  static toInterface(payable: Payable):PayableInterface {
+  static toInterface(payable: Payable | PayableModel):PayableInterface {
     return {
       idTransaction: payable.id_transaction,
       availableAmount: payable.available_amount,

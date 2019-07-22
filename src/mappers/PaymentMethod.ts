@@ -1,8 +1,8 @@
 import PaymentMethod from "../model/PaymentMethod";
-import { PaymentMethodInterface } from "../interface/PaymentMethod";
+import { PaymentMethodInterface, PaymentMethodModel } from "../interface/PaymentMethod";
 
 class PaymentMethodMap {
-  static toInterface(paymentMethod: PaymentMethod): PaymentMethodInterface {
+  static toInterface(paymentMethod: PaymentMethod | PaymentMethodModel ): PaymentMethodInterface {
     return {
       name: paymentMethod.name,
       description: paymentMethod.description,

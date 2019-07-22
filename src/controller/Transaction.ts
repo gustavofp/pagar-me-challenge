@@ -52,7 +52,7 @@ class TransactionController implements Controller {
       const card: CardInterface = await CardService.createCard(cardData);
 
       const paymentMethod: PaymentMethodInterface = await PaymentMethodService.getPaymentMethodByName(transactionRequest.payment_method);
-      console.log(card);
+
       const transactionModel: TransactionInterface = CreateTransactionRequestMap.toTransactionInterface(transactionRequest, card);
       const transaction: TransactionInterface = await TransactionService.insertTransaction(transactionModel);
       const payableData: PayableInterface = await PayableService.insertPayableForTransaction(transaction, paymentMethod);
