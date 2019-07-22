@@ -22,5 +22,8 @@
     "inlineSourceMap": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
-  }
+  },
+  "exclude": [
+    "tests"
+  ]
 }
