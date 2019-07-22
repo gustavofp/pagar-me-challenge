@@ -1,5 +1,4 @@
 import CardRepository from '../../src/repository/Card';
-import { CardModel } from '../../src/interface/Card';
 import Card from '../../src/model/Card';
 
 jest.mock('../../src/model/Card', () => ({

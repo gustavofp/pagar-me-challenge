@@ -8,7 +8,7 @@ class CardService {
   static async getCardById(id: number): Promise<CardInterface> {
     const card: Card | null = await CardRepository.getById(id);
     if (!card) {
-      throw ErrorService.cardNotFount();
+      throw ErrorService.cardNotFound();
     }
 
     const cardInterface: CardInterface = CardMap.toInterface(card);

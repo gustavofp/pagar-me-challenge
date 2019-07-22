@@ -6,7 +6,7 @@ class ErrorService {
 
     return err;
   }
-  static cardNotFount() {
+  static cardNotFound() {
     const err: Error = new Error();
     err.message = 'card not found';
     err.name = 'CARD_NOT_FOUND';
