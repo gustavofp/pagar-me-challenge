@@ -6,6 +6,7 @@
   "scripts": {
     "start": "ts-node src/server.ts",
     "build": "tsc",
+    "postbuild": "cp -R package.json dist/package.json && cp -R yarn.lock dist/yarn.lock && cd dist && yarn install --prod",
     "test": "jest"
   },
   "devDependencies": {
